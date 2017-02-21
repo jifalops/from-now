@@ -27,13 +27,23 @@
           </script>
         </template>
       </demo-snippet>
-
+      Using idle.
+      <demo-snippet>
+        <template>
+          <from-now id="now2" idle></from-now>
+          <script>
+            var el = document.getElementById('now2');
+            el.time = Date.now();
+          </script>
+        </template>
+      </demo-snippet>
+      Using allow-future.
       <demo-snippet>
         <template>
           <from-now time="1800000000000" allow-future></from-now>
         </template>
       </demo-snippet>
-
+      Same time without allow-future.
       <demo-snippet>
         <template>
           <from-now time="1800000000000"></from-now>

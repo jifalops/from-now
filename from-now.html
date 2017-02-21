@@ -30,30 +30,43 @@ A polymer element that strategically updates a time from (or to) now using Momen
          * appear to be in the future. By default future times are negated so
          * they are described as in the past.
          */
-         allowFuture: {
-           type: Boolean,
-           value: false,
-           reflectToAttribute: true
-         },
+        allowFuture: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        },
 
-         /**
-          * The Momentjs to/from output
-          */
-          output: {
-            type: String,
-            notify: true,
-            readOnly: true
-          }
+        /**
+         * Whether to disable updating the outputted time.
+         */
+        idle: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        },
+
+        /**
+         * The Momentjs to/from output
+         */
+        output: {
+          type: String,
+          notify: true,
+          readOnly: true
+        }
       },
 
       observers: [
-        '_inputsChanged(time, allowFuture)'
+        '_inputsChanged(time, allowFuture, idle)'
       ],
 
-      _inputsChanged: function(time, allowFuture) {
+      _inputsChanged: function(time, allowFuture, idle) {
         if (time) {
           var now = Date.now();
-          this._addTimeout(Math.abs(now - time));
+          if (idle) {
+              clearTimeout(this._timeout);
+          } else {
+            this._addTimeout(Math.abs(now - time));
+          }
           this._setOutput((allowFuture || time <= now) ? moment(time).fromNow() : moment(time).toNow());
         } else {
           this._setOutput('');
@@ -71,8 +84,8 @@ A polymer element that strategically updates a time from (or to) now using Momen
         } else {                                    // Otherwise,
           timeout = 24 * 60 * 60 * 1000;            // update once per day.
         }
-        setTimeout(function () {
-          this._inputsChanged(this.time, this.allowFuture);
+        this._timeout = setTimeout(function () {
+          this._inputsChanged(this.time, this.allowFuture, this.idle);
         }.bind(this), timeout);
       }
     });
