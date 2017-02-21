@@ -39,7 +39,7 @@ A polymer element that strategically updates a time from (or to) now using Momen
         /**
          * Whether to disable updating the outputted time.
          */
-        idle: {
+        hidden: {
           type: Boolean,
           value: false,
           reflectToAttribute: true
@@ -56,13 +56,13 @@ A polymer element that strategically updates a time from (or to) now using Momen
       },
 
       observers: [
-        '_inputsChanged(time, allowFuture, idle)'
+        '_inputsChanged(time, allowFuture, hidden)'
       ],
 
-      _inputsChanged: function(time, allowFuture, idle) {
+      _inputsChanged: function(time, allowFuture, hidden) {
         if (time) {
           var now = Date.now();
-          if (idle) {
+          if (hidden) {
               clearTimeout(this._timeout);
           } else {
             this._addTimeout(Math.abs(now - time));
@@ -85,7 +85,7 @@ A polymer element that strategically updates a time from (or to) now using Momen
           timeout = 24 * 60 * 60 * 1000;            // update once per day.
         }
         this._timeout = setTimeout(function () {
-          this._inputsChanged(this.time, this.allowFuture, this.idle);
+          this._inputsChanged(this.time, this.allowFuture, this.hidden);
         }.bind(this), timeout);
       }
     });

@@ -27,13 +27,16 @@
           </script>
         </template>
       </demo-snippet>
-      Using idle.
+      Using hidden (see console output).
       <demo-snippet>
         <template>
-          <from-now id="now2" idle></from-now>
+          <from-now id="now2" hidden></from-now>
           <script>
             var el = document.getElementById('now2');
             el.time = Date.now();
+            setInterval(function() {
+              console.log('hidden output:', el.output);
+            }, 5000);
           </script>
         </template>
       </demo-snippet>
