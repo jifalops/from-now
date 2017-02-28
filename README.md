@@ -10,7 +10,7 @@ bower install --save from-to-now
 ```
 
 ## Usage
-Simply give it a timestamp including milliseconds at it will output time
+Simply give it a timestamp including milliseconds and it will output time
 relative to now in a human friendly format. It will also update the output
 according to a far away it is (e.g. once per day/hour/minute).
 
