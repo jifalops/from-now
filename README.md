@@ -4,6 +4,7 @@
 Live relative time from (or to) now using Momentjs that strategically updates.
 
 ## Installation
+
 ```
 bower install --save from-to-now
 ```
