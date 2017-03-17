@@ -1,4 +1,4 @@
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="moment-import.html">
 
 <!--
@@ -14,10 +14,12 @@ A polymer element that strategically updates a time from (or to) now using Momen
   </template>
 
   <script>
-    Polymer({
-      is: 'from-now',
+  class FromNow extends Polymer.Element {
 
-      properties: {
+    static get is() { return 'from-now'; }
+
+    static get properties() {
+      return {
         /**
          * The time to measure to/from now.
          */
@@ -53,41 +55,45 @@ A polymer element that strategically updates a time from (or to) now using Momen
           notify: true,
           readOnly: true
         }
-      },
+      };
+    }
 
-      observers: [
+    static get observers() {
+      return [
         '_inputsChanged(time, allowFuture, hidden)'
-      ],
-
-      _inputsChanged: function(time, allowFuture, hidden) {
-        if (time) {
-          var now = Date.now();
-          if (hidden) {
-              clearTimeout(this._timeout);
-          } else {
-            this._addTimeout(Math.abs(now - time));
-          }
-          this._setOutput((allowFuture || time <= now) ? moment(time).fromNow() : moment(time).toNow());
+      ];
+    }
+    _inputsChanged(time, allowFuture, hidden) {
+      if (time) {
+        var now = Date.now();
+        if (hidden) {
+            clearTimeout(this._timeout);
         } else {
-          this._setOutput('');
+          this._addTimeout(Math.abs(now - time));
         }
-      },
-
-      _addTimeout: function(diff) {
-        var timeout;
-        if (diff < 60 * 1000) {                     // If less than one minute,
-          timeout = 15 * 1000;                      // update every 15 seconds.
-        } else if (diff < 60 * 60 * 1000) {         // If less than one hour,
-          timeout = 60 * 1000;                      // update every minute.
-        } else if (diff < 24 * 60 * 60 * 1000) {    // If less than one day,
-          timeout = 60 * 60 * 1000;                 // update every hour.
-        } else {                                    // Otherwise,
-          timeout = 24 * 60 * 60 * 1000;            // update once per day.
-        }
-        this._timeout = setTimeout(function () {
-          this._inputsChanged(this.time, this.allowFuture, this.hidden);
-        }.bind(this), timeout);
+        this._setOutput((allowFuture || time <= now) ? moment(time).fromNow() : moment(time).toNow());
+      } else {
+        this._setOutput('');
       }
-    });
+    }
+
+    _addTimeout(diff) {
+      var timeout;
+      if (diff < 60 * 1000) {                     // If less than one minute,
+        timeout = 15 * 1000;                      // update every 15 seconds.
+      } else if (diff < 60 * 60 * 1000) {         // If less than one hour,
+        timeout = 60 * 1000;                      // update every minute.
+      } else if (diff < 24 * 60 * 60 * 1000) {    // If less than one day,
+        timeout = 60 * 60 * 1000;                 // update every hour.
+      } else {                                    // Otherwise,
+        timeout = 24 * 60 * 60 * 1000;            // update once per day.
+      }
+      this._timeout = setTimeout(function () {
+        this._inputsChanged(this.time, this.allowFuture, this.hidden);
+      }.bind(this), timeout);
+    }
+  }
+
+  window.customElements.define(FromNow.is, FromNow);
   </script>
 </dom-module>
