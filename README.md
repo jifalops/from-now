@@ -2,6 +2,7 @@
 
 # from-now
 Live relative time from (or to) now using Momentjs that strategically updates.
+The output follows the Material design date format guidelines.
 
 ## Installation
 
@@ -21,7 +22,7 @@ according to how far away it is (e.g. once per day/hour/minute).
   <template>
     <script src="../webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="from-now.html">
-    <next-code-block></next-code-block>   
+    <next-code-block></next-code-block>
   </template>
 </custom-element-demo>
 ```

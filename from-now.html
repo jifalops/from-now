@@ -3,7 +3,8 @@
 
 <!--
 `from-now`
-A polymer element that strategically updates a time from (or to) now using Momentjs.
+A polymer element that strategically updates its output based on the age of
+`time`. The default output is the relative time (e.g. 8 hours ago).
 
 @demo demo/index.html
 -->
@@ -20,6 +21,7 @@ A polymer element that strategically updates a time from (or to) now using Momen
       properties: {
         /**
          * The time to measure to/from now.
+         * Unix epoch time in milliseconds.
          */
         time: {
           type: Number,
@@ -35,40 +37,92 @@ A polymer element that strategically updates a time from (or to) now using Momen
           value: false,
           reflectToAttribute: true
         },
-
         /**
          * Whether to disable updating the outputted time.
+         */
+        idle: {
+          type: Boolean,
+          value: false
+        },
+        /**
+         * _Deprecated_.
+         * Use `idle` instead.
+         * @deprecated
          */
         hidden: {
           type: Boolean,
           value: false,
           reflectToAttribute: true
         },
-
         /**
-         * The Momentjs to/from output
+         * The relative time e.g. "8 hours ago"
+         */
+        relative: {
+          type: String,
+          notify: true,
+          readOnly: true
+        },
+        /**
+         * The absolute time e.g. "Today at 4:30 PM"
+         */
+        absolute: {
+          type: String,
+          notify: true,
+          readOnly: true
+        },
+        /**
+         * The output of this element, either `relative` or `absolute`,
+         * depending on `useAbsolute`.
          */
         output: {
           type: String,
           notify: true,
           readOnly: true
+        },
+        /**
+         * Whether to use the absolute value as the outout.
+         */
+        useAbsolute: {
+          type: Boolean,
+          value: false,
+        },
+        /**
+         * The date format to use for the absolute time. If left empty,
+         * A dynamic format is used, based on moment(time).calendar().
+         *
+         * See https://momentjs.com/docs/#/parsing/string-format/
+         *
+         * Examples:
+         *   * YYYY-MM-DD HH:mm:ss
+         *   * MM/DD/YYYY hh:mm a
+         *   * Do of MMM, YYYY at hh:mm a
+         */
+        format: {
+          type: String,
+          value: ''
         }
       },
 
       observers: [
-        '_inputsChanged(time, allowFuture, hidden)'
+        '_inputsChanged(time, allowFuture, hidden, idle, format, useAbsolute)'
       ],
 
-      _inputsChanged: function(time, allowFuture, hidden) {
+      _inputsChanged: function(time, allowFuture, hidden, idle, format, useAbsolute) {
         if (time) {
           var now = Date.now();
-          if (hidden) {
+          if (hidden || idle) {
               clearTimeout(this._timeout);
           } else {
             this._addTimeout(Math.abs(now - time));
           }
-          this._setOutput((allowFuture || time <= now) ? moment(time).fromNow() : moment(time).toNow());
+          this._setRelative((allowFuture || time <= now) ? moment(time).fromNow() : moment(time).toNow());
+          this._setAbsolute(format ? moment(time).format(format) : moment(time).calendar());
+          this._setOutput(useAbsolute ? this.absolute : this.relative);
+          this.setAttribute('title', useAbsolute ? this.relative : this.absolute);
         } else {
+          this.setAttribute('title', '');
+          this._setRelative('');
+          this._setAbsolute('');
           this._setOutput('');
         }
       },
@@ -85,9 +139,10 @@ A polymer element that strategically updates a time from (or to) now using Momen
           timeout = 24 * 60 * 60 * 1000;            // update once per day.
         }
         this._timeout = setTimeout(function () {
-          this._inputsChanged(this.time, this.allowFuture, this.hidden);
+          this._inputsChanged(this.time, this.allowFuture, this.hidden,
+            this.idle, this.format, this.useAbsolute);
         }.bind(this), timeout);
-      }
+      },
     });
   </script>
 </dom-module>

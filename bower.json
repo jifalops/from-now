@@ -13,7 +13,7 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0",
-    "moment": "^2.15.2"
+    "moment": "^2.18.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
