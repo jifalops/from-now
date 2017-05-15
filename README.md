@@ -1,13 +1,13 @@
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/jifalops/from-now)
 
 # from-now
-Live relative time from (or to) now using Momentjs that strategically updates.
-The output follows the Material design date format guidelines.
+A polymer element that strategically updates its output based on the age of
+`time`. The default output is the relative time (e.g. 8 hours ago).
 
 ## Installation
 
 ```
-bower install --save from-to-now
+bower install --save jifalops/from-now
 ```
 
 ## Usage
@@ -29,9 +29,16 @@ according to how far away it is (e.g. once per day/hour/minute).
 -->
 
 ```html
-<from-now id="now"></from-now>
+<from-now id="now1"></from-now> | default<br/>
+<from-now id="now2" idle></from-now> | idle<br/>
+<from-now id="now3" use-absolute></from-now> | absolute<br/>
+<from-now id="now4" format="YYYY-MM-DD HH:mm"></from-now> | formatted absolute<br/>
+(mouseover for alternate format)<br/><br/>
 <script>
-  document.getElementById('now').time = Date.now();
+  document.getElementById('now1').time = Date.now();
+  document.getElementById('now2').time = Date.now();
+  document.getElementById('now3').time = Date.now();
+  document.getElementById('now4').time = Date.now();
 </script>
 ```
 
