@@ -1,4 +1,4 @@
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="moment-import.html">
 
 <!--
@@ -10,15 +10,13 @@ A polymer element that strategically updates its output based on the age of
 -->
 
 <dom-module id="from-now">
-  <template>
-    [[output]]
-  </template>
+  <template>[[output]]</template>
 
   <script>
-    Polymer({
-      is: 'from-now',
-
-      properties: {
+  class FromNow extends Polymer.Element {
+    static get is() { return 'from-now'; }
+    static get properties() {
+      return {
         /**
          * The time to measure to/from now.
          * Unix epoch time in milliseconds.
@@ -35,7 +33,6 @@ A polymer element that strategically updates its output based on the age of
         allowFuture: {
           type: Boolean,
           value: false,
-          reflectToAttribute: true
         },
         /**
          * Whether to disable updating the outputted time.
@@ -43,16 +40,6 @@ A polymer element that strategically updates its output based on the age of
         idle: {
           type: Boolean,
           value: false
-        },
-        /**
-         * _Deprecated_.
-         * Use `idle` instead.
-         * @deprecated
-         */
-        hidden: {
-          type: Boolean,
-          value: false,
-          reflectToAttribute: true
         },
         /**
          * The relative time e.g. "8 hours ago"
@@ -101,48 +88,49 @@ A polymer element that strategically updates its output based on the age of
           type: String,
           value: ''
         }
-      },
-
-      observers: [
-        '_inputsChanged(time, allowFuture, hidden, idle, format, useAbsolute)'
-      ],
-
-      _inputsChanged: function(time, allowFuture, hidden, idle, format, useAbsolute) {
-        if (time) {
-          var now = Date.now();
-          if (hidden || idle) {
-              clearTimeout(this._timeout);
-          } else {
-            this._addTimeout(Math.abs(now - time));
-          }
-          this._setRelative((allowFuture || time <= now) ? moment(time).fromNow() : moment(time).toNow());
-          this._setAbsolute(format ? moment(time).format(format) : moment(time).calendar());
-          this._setOutput(useAbsolute ? this.absolute : this.relative);
-          this.setAttribute('title', useAbsolute ? this.relative : this.absolute);
+      };
+    }
+    static get observers() {
+      return [
+        '_inputsChanged(time, allowFuture, idle, format, useAbsolute)'
+      ];
+    }
+    _inputsChanged(time, allowFuture, idle, format, useAbsolute) {
+      if (time) {
+        var now = Date.now();
+        if (idle) {
+          clearTimeout(this._timeout);
         } else {
-          this.setAttribute('title', '');
-          this._setRelative('');
-          this._setAbsolute('');
-          this._setOutput('');
+          this._addTimeout(Math.abs(now - time));
         }
-      },
-
-      _addTimeout: function(diff) {
-        var timeout;
-        if (diff < 60 * 1000) {                     // If less than one minute,
-          timeout = 15 * 1000;                      // update every 15 seconds.
-        } else if (diff < 60 * 60 * 1000) {         // If less than one hour,
-          timeout = 60 * 1000;                      // update every minute.
-        } else if (diff < 24 * 60 * 60 * 1000) {    // If less than one day,
-          timeout = 60 * 60 * 1000;                 // update every hour.
-        } else {                                    // Otherwise,
-          timeout = 24 * 60 * 60 * 1000;            // update once per day.
-        }
-        this._timeout = setTimeout(function () {
-          this._inputsChanged(this.time, this.allowFuture, this.hidden,
-            this.idle, this.format, this.useAbsolute);
-        }.bind(this), timeout);
-      },
-    });
+        this._setRelative((allowFuture || time <= now) ? moment(time).fromNow() : moment(time).toNow());
+        this._setAbsolute(format ? moment(time).format(format) : moment(time).calendar());
+        this._setOutput(useAbsolute ? this.absolute : this.relative);
+        this.setAttribute('title', useAbsolute ? this.relative : this.absolute);
+      } else {
+        this.setAttribute('title', '');
+        this._setRelative('');
+        this._setAbsolute('');
+        this._setOutput('');
+      }
+    }
+    _addTimeout(diff) {
+      var timeout;
+      if (diff < 60 * 1000) {                     // If less than one minute,
+        timeout = 15 * 1000;                      // update every 15 seconds.
+      } else if (diff < 60 * 60 * 1000) {         // If less than one hour,
+        timeout = 60 * 1000;                      // update every minute.
+      } else if (diff < 24 * 60 * 60 * 1000) {    // If less than one day,
+        timeout = 60 * 60 * 1000;                 // update every hour.
+      } else {                                    // Otherwise,
+        timeout = 24 * 60 * 60 * 1000;            // update once per day.
+      }
+      this._timeout = setTimeout(function () {
+        this._inputsChanged(this.time, this.allowFuture,
+          this.idle, this.format, this.useAbsolute);
+      }.bind(this), timeout);
+    }
+  }
+  window.customElements.define(FromNow.is, FromNow);
   </script>
 </dom-module>

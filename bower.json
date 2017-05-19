@@ -1,25 +1,26 @@
 {
   "name": "from-now",
   "description": "A polymer element that strategically updates a time from (or to) now using Momentjs. ",
+  "authors": ["Jacob Phillips (https://github.com/jifalops)"],
+  "license": "MIT",
   "main": "from-now.html",
   "keywords": [
     "web-components",
     "moment",
     "momentjs",
     "time",
+    "from",
     "now",
     "duration",
     "since"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.4.0",
+    "polymer": "^2.0.0",
     "moment": "^2.18.1"
   },
   "devDependencies": {
-    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
-    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
-    "web-component-tester": "^4.0.0",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
-  },
-  "license": "MIT"
+    "iron-demo-helpers": "^2.0.0",
+    "web-component-tester": "^6.0.0",
+    "webcomponentsjs": "^1.0.0"
+  }
 }

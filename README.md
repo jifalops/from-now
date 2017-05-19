@@ -23,6 +23,12 @@ according to how far away it is (e.g. once per day/hour/minute).
     <script src="../webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="from-now.html">
     <next-code-block></next-code-block>
+    <script>
+      document.getElementById('now1').time = Date.now();
+      document.getElementById('now2').time = Date.now();
+      document.getElementById('now3').time = Date.now();
+      document.getElementById('now4').time = Date.now();
+    </script>
   </template>
 </custom-element-demo>
 ```
@@ -32,14 +38,8 @@ according to how far away it is (e.g. once per day/hour/minute).
 <from-now id="now1"></from-now> | default<br/>
 <from-now id="now2" idle></from-now> | idle<br/>
 <from-now id="now3" use-absolute></from-now> | absolute<br/>
-<from-now id="now4" format="YYYY-MM-DD HH:mm"></from-now> | formatted absolute<br/>
-(mouseover for alternate format)<br/><br/>
-<script>
-  document.getElementById('now1').time = Date.now();
-  document.getElementById('now2').time = Date.now();
-  document.getElementById('now3').time = Date.now();
-  document.getElementById('now4').time = Date.now();
-</script>
+<from-now id="now4" use-absolute format="YYYY-MM-DD HH:mm"></from-now> | formatted absolute<br/>
+(mouseover for alternate format)
 ```
 
 Full demo:
