@@ -75,7 +75,7 @@ A polymer element that strategically updates its output based on the age of
         },
         /**
          * The date format to use for the absolute time. If left empty,
-         * A dynamic format is used, based on moment(time).calendar().
+         * a dynamic format is used, based on moment(time).calendar().
          *
          * See https://momentjs.com/docs/#/parsing/string-format/
          *
@@ -125,12 +125,12 @@ A polymer element that strategically updates its output based on the age of
       } else {                                    // Otherwise,
         timeout = 24 * 60 * 60 * 1000;            // update once per day.
       }
-      this._timeout = setTimeout(function () {
+      this._timeout = setTimeout(() => {
         this._inputsChanged(this.time, this.allowFuture,
           this.idle, this.format, this.useAbsolute);
-      }.bind(this), timeout);
+      }, timeout);
     }
   }
-  window.customElements.define(FromNow.is, FromNow);
+  customElements.define(FromNow.is, FromNow);
   </script>
 </dom-module>
