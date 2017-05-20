@@ -103,15 +103,15 @@ A polymer element that strategically updates its output based on the age of
         } else {
           this._addTimeout(Math.abs(now - time));
         }
-        this._setRelative((allowFuture || time <= now) ? moment(time).fromNow() : moment(time).toNow());
-        this._setAbsolute(format ? moment(time).format(format) : moment(time).calendar());
-        this._setOutput(useAbsolute ? this.absolute : this.relative);
+        this._setProperty('relative', (allowFuture || time <= now) ? moment(time).fromNow() : moment(time).toNow());
+        this._setProperty('absolute', format ? moment(time).format(format) : moment(time).calendar());
+        this._setProperty('output', useAbsolute ? this.absolute : this.relative);
         this.setAttribute('title', useAbsolute ? this.relative : this.absolute);
       } else {
+        this._setProperty('relative', '');
+        this._setProperty('absolute', '');
+        this._setProperty('output', '');
         this.setAttribute('title', '');
-        this._setRelative('');
-        this._setAbsolute('');
-        this._setOutput('');
       }
     }
     _addTimeout(diff) {
