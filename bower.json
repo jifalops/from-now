@@ -1,9 +1,9 @@
 {
   "name": "from-now",
   "description": "A polymer element that strategically updates a time from (or to) now using Momentjs. ",
-  "authors": ["Jacob Phillips (https://github.com/jifalops)"],
-  "license": "MIT",
   "main": "from-now.html",
+  "authors": ["Jacob Phillips (https://github.com/jifalops) <jifalops@gmail.com>"],
+  "license": "MIT",
   "keywords": [
     "web-components",
     "moment",

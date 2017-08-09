@@ -7,7 +7,9 @@ A polymer element that strategically updates its output based on the age of
 ## Installation
 
 ```
-bower install --save jifalops/from-now
+bower i -S jifalops/from-now        # Polymer 2.0 class based
+bower i -S jifalops/from-now#0.4.0  # Polymer 2.0 hybrid (1.x compatible)
+bower i -S jifalops/from-now#0.3.0  # Polymer 1.x based
 ```
 
 ## Usage
@@ -44,10 +46,9 @@ according to how far away it is (e.g. once per day/hour/minute).
 
 Full demo:
 [webcomponents.org](https://www.webcomponents.org/element/jifalops/from-now/demo/demo/index.html)
-| [github](https://jifalops.github.io/from-now/components/from-now/demo/).
+| [github](https://jifalops.github.io/from-now/components/from-now/demo/)
 
 API: [webcomponents.org](https://www.webcomponents.org/element/jifalops/from-now/from-now)
-| [github](https://jifalops.github.io/from-now).
 
 ## Contributing
 
